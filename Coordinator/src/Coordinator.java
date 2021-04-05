@@ -16,7 +16,7 @@ public class Coordinator {
     // Start all threads
     private static void start(RequestManager rm, MCReceiver mcr, MCTransmitter mcf ){
         rm.start();
-        mcf.start();
+        mct.start();
         mcr.start();
     }
     public static void main(String[] args) throws IOException {
@@ -29,7 +29,7 @@ public class Coordinator {
 
         RequestManager rm = new RequestManager(participant_list, td, incomingPort);
         MCReceiver mcr = new MCReceiver(participant_list, td, messageQ, incomingPort);
-        MCTransmitter mcf = new MCTransmitter(participant_list, td, messageQ);
+        MCTransmitter mct = new MCTransmitter(participant_list, td, messageQ);
 
         start(rm, mcr, mcf);
     }
