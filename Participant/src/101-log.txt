@@ -1,2 +1,0 @@
-MC MSG >_ ms1
-MC MSG >_ msg2

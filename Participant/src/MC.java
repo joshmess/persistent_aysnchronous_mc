@@ -64,14 +64,4 @@ public class MC extends Thread{
         }
 
     }
-
-    public void end(){
-        try{
-            ss.close();
-            leave = true;
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-    }
 }

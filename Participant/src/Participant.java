@@ -38,9 +38,9 @@ public class Participant {
         while(!input.equals("quit")){
             System.out.print(currentWorkingDirectory);
             input = s.nextLine();
-            String[] commandAndValue = input.split(" ");
+            String[] request = input.split(" ");
 
-            switch(commandAndValue[0]) {
+            switch(request[0]) {
 
                 case "register":
 
@@ -48,8 +48,8 @@ public class Participant {
                     socket = new Socket(server, serverPort);
                     outputStream = new  ObjectOutputStream(socket.getOutputStream());
                     inputStream = new ObjectInputStream(socket.getInputStream());
-                    MCPort = Integer.parseInt(commandAndValue[1]);
-                    outputStream.writeObject(commandAndValue[0] + ":"+ MCPort + ":" + myIp + ":" + pid);
+                    MCPort = Integer.parseInt(request[1]);
+                    outputStream.writeObject(request[0] + ":"+ MCPort + ":" + myIp + ":" + pid);
                     outgoingPort = (int)inputStream.readObject();
                     multicast_thread = new MC(server, MCPort, logFile);
                     multicast_thread.start();
@@ -62,9 +62,9 @@ public class Participant {
                         outputStream = new  ObjectOutputStream(socket.getOutputStream());
                         inputStream = new ObjectInputStream(socket.getInputStream());
                         outgoingPort = 0;
-                        outputStream.writeObject(commandAndValue[0] + ":" + myIp + ":" + pid);
+                        outputStream.writeObject(request[0] + ":" + myIp + ":" + pid);
                         isRegistered = false;
-                        multicast_thread.end();
+			multicast_thread.leave = true;
                         multicast_thread.interrupt();
                         outputStream.close();
                         inputStream.close();
@@ -83,7 +83,7 @@ public class Participant {
                         outputStream = new  ObjectOutputStream(socket.getOutputStream());
                         inputStream = new ObjectInputStream(socket.getInputStream());
 
-                        outputStream.writeObject(commandAndValue[0] + ":" + myIp + ":" + pid);
+                        outputStream.writeObject(request[0] + ":" + myIp + ":" + pid);
                         isDisconnected = true;
 
                     }
@@ -98,8 +98,8 @@ public class Participant {
                         socket = new Socket(server, serverPort);
                         outputStream = new  ObjectOutputStream(socket.getOutputStream());
                         inputStream = new ObjectInputStream(socket.getInputStream());
-                        MCPort = Integer.parseInt(commandAndValue[1]);
-                        outputStream.writeObject(commandAndValue[0] + ":"+ MCPort + ":" + myIp + ":" + pid);
+                        MCPort = Integer.parseInt(request[1]);
+                        outputStream.writeObject(request[0] + ":"+ MCPort + ":" + myIp + ":" + pid);
                         multicast_thread = new MC(server, MCPort, logFile);
                         multicast_thread.start();
                         isDisconnected = false;
