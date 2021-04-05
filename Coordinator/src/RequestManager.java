@@ -74,7 +74,7 @@ public class RequestManager extends Thread{
                                 participant.disconnectTime = System.currentTimeMillis();
                             }
                         }
-                        System.out.println(">_PID " + request[1] +" disconnected at address " + given_ip);
+                        System.out.println(">_PID " + given_pid +" disconnected at address " + given_ip);
                         break;
 
                     case "reconnect":
