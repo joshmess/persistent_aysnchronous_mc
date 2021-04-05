@@ -25,7 +25,7 @@ public class Participant {
         Scanner s = new Scanner(System.in);
         int outgoingPort = 0;
         int MCPort = 0;
-        String currentWorkingDirectory = "MCparticipant >_";
+        String pwd = "MCparticipant >_";
         Socket socket = null;
         ObjectOutputStream outputStream;
         ObjectInputStream inputStream;
@@ -36,7 +36,7 @@ public class Participant {
         MC multicast_thread = null;
 
         while(!input.equals("quit")){
-            System.out.print(currentWorkingDirectory);
+            System.out.print(pwd);
             input = s.nextLine();
             String[] request = input.split(" ");
 
