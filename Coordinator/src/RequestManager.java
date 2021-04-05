@@ -48,7 +48,7 @@ public class RequestManager extends Thread{
                     case "register":
                         outputStream.writeObject(incomingPort);
                         participant_list.put(Integer.parseInt(request[3]),new ParticipantConfig(request[2],Integer.parseInt(request[3]), Integer.parseInt(request[1]),sock));
-                        System.out.println(">_PID " + request[2] +" added to multicast group.");
+                        System.out.println(">_PID " + request[3] +" added to multicast group.");
                         break;
 
                     case "deregister":
