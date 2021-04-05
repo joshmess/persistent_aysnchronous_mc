@@ -1,10 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /*
  * The Coordinator class drives the MC coordinator and starts all sub-processes.
@@ -12,12 +9,12 @@ import java.util.Queue;
 public class Coordinator {
 
     public static Queue<String> messageQ = new LinkedList<>();
-    public static ArrayList<ParticipantConfig> participant_list = new ArrayList<>();
+    public static HashMap<Integer,ParticipantConfig> participant_list = new HashMap<>();
     public static int incomingPort;
     public static int td;
 
     // Start all threads
-    private static void start(RequestManager rm, MCReceiver mcr, MCForwarder mcf ){
+    private static void start(RequestManager rm, MCReceiver mcr, MCTransmitter mcf ){
         rm.start();
         mcf.start();
         mcr.start();
@@ -32,7 +29,7 @@ public class Coordinator {
 
         RequestManager rm = new RequestManager(participant_list, td, incomingPort);
         MCReceiver mcr = new MCReceiver(participant_list, td, messageQ, incomingPort);
-        MCForwarder mcf = new MCForwarder(participant_list, td, messageQ);
+        MCTransmitter mcf = new MCTransmitter(participant_list, td, messageQ);
 
         start(rm, mcr, mcf);
     }

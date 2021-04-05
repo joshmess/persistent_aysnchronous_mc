@@ -4,6 +4,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /*
  * RequestManager, the first of Coordinator threads, processes requests from participants.
@@ -13,11 +14,11 @@ public class RequestManager extends Thread{
     private static final int ssPort = 4780;
     private static ServerSocket ss;
     static Socket sock = null;
-    public static ArrayList<ParticipantConfig> participant_list = new ArrayList<>();
+    public static HashMap<Integer, ParticipantConfig> participant_list = new HashMap<>();
     public static int incomingPort;
     public static int td;
 
-    public RequestManager(ArrayList<ParticipantConfig> participant_list, int td, int incomingPort) throws IOException {
+    public RequestManager(HashMap<Integer,ParticipantConfig> participant_list, int td, int incomingPort) throws IOException {
 
         ss = new ServerSocket(ssPort);
         this.participant_list = participant_list;
@@ -46,13 +47,13 @@ public class RequestManager extends Thread{
 
                     case "register":
                         outputStream.writeObject(incomingPort);
-                        participant_list.add(new ParticipantConfig(request[1],Integer.parseInt(request[2]), Integer.parseInt(request[3]),sock));
+                        participant_list.put(Integer.parseInt(request[2]),new ParticipantConfig(request[1],Integer.parseInt(request[2]), Integer.parseInt(request[3]),sock));
                         System.out.println(">_PID " + request[2] +" added to multicast group.");
                         break;
 
                     case "disconnect":
                         int given_pid = Integer.parseInt(request[1]);
-                        for(ParticipantConfig participant : participant_list)
+                        for(ParticipantConfig participant : participant_list.values())
                         {
                             if(participant.pid == given_pid)
                             {
@@ -64,7 +65,7 @@ public class RequestManager extends Thread{
 
                     case "deregister":
                         given_pid = Integer.parseInt(request[1]);
-                        for(ParticipantConfig participant : participant_list)
+                        for(ParticipantConfig participant : participant_list.values())
                         {
                             if(participant.pid == given_pid)
                             {
@@ -78,7 +79,7 @@ public class RequestManager extends Thread{
                     case "reconnect":
 
                         given_pid = Integer.parseInt(request[1]);
-                        for(ParticipantConfig participant : participant_list)
+                        for(ParticipantConfig participant : participant_list.values())
                         {
                             if(!participant.status.equals("deregistered") && participant.pid == given_pid)
                             {

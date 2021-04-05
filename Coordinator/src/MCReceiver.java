@@ -14,15 +14,14 @@ import java.util.*;
  */
 public class MCReceiver extends Thread {
 
-    ArrayList<ParticipantConfig> participant_list;
+    HashMap<Integer, ParticipantConfig> participant_list;
     int td;
     Queue<String> messageQ;
     private static ServerSocket server;
     static Socket socket = null;
+    public MCReceiver(HashMap<Integer, ParticipantConfig> participant_list, int td, Queue<String> messageQ, int incomingMessagePort) throws IOException {
 
-    public MCReceiver(ArrayList<ParticipantConfig> participants, int td, Queue<String> messageQ, int incomingMessagePort) throws IOException {
-
-        this.participant_list = participants;
+        this.participant_list = participant_list;
         this.td = td;
         this.messageQ = messageQ;
         server = new ServerSocket(incomingMessagePort);
