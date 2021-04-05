@@ -20,12 +20,12 @@ public class MCReceiver extends Thread {
     int td;
     Queue<String> messageQ;
 
-    public MCReceiver(HashMap<Integer, ParticipantConfig> participant_list, int td, Queue<String> messageQ, int incomingMessagePort) throws IOException {
+    public MCReceiver(HashMap<Integer, ParticipantConfig> participant_list, int td, Queue<String> messageQ, int incomingPort) throws IOException {
 
         this.participant_list = participant_list;
         this.td = td;
         this.messageQ = messageQ;
-        server = new ServerSocket(incomingMessagePort);
+        server = new ServerSocket(incomingPort);
     }
 
 
