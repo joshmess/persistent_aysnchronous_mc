@@ -28,4 +28,4 @@ $ java Participant [PARTICIPANT_CONFIG_FILE]
 ```
 
 The Server Listens on port 4780, and the Coordinator listens for requests on port 9000.
-###This project was done in its entirety by Josh, Alex, and Robert. We hereby state that we have not received unauthorized help of any form. 
+### This project was done in its entirety by Josh, Alex, and Robert. We hereby state that we have not received unauthorized help of any form. 
