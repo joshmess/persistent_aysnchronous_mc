@@ -14,7 +14,7 @@ public class Coordinator {
     public static int td;
 
     // Start all threads
-    private static void start(RequestManager rm, MCReceiver mcr, MCTransmitter mcf ){
+    private static void start(RequestManager rm, MCReceiver mcr, MCTransmitter mct ){
         rm.start();
         mct.start();
         mcr.start();
@@ -31,6 +31,6 @@ public class Coordinator {
         MCReceiver mcr = new MCReceiver(participant_list, td, messageQ, incomingPort);
         MCTransmitter mct = new MCTransmitter(participant_list, td, messageQ);
 
-        start(rm, mcr, mcf);
+        start(rm, mcr, mct);
     }
 }
