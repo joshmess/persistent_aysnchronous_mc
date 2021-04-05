@@ -86,7 +86,7 @@ public class RequestManager extends Thread{
                             {
                                 participant.status="active";
                                 participant.port = Integer.parseInt(request[1]);
-                                System.out.println(">_PID " + given_ip +" reconnected to multicast group at address " + given_ip);
+                                System.out.println(">_PID " + given_pid +" reconnected to multicast group at address " + given_ip);
 
                                 //send all missed messages
                                 while(!participant.temporalQ.isEmpty()){
