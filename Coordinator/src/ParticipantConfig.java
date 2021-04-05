@@ -11,6 +11,7 @@ public class ParticipantConfig {
     int port;
     int pid;
     String status;
+    long disconnectTime = -1;
     static Socket sock = null;
     static Queue<String> temporalQ = new LinkedList<>();
 

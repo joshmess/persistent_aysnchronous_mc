@@ -45,11 +45,11 @@ public class Participant {
                 case "register":
 
                     isRegistered = true;
-                    MCPort = Integer.parseInt(commandAndValue[1]);
                     socket = new Socket(server, serverPort);
                     outputStream = new  ObjectOutputStream(socket.getOutputStream());
                     inputStream = new ObjectInputStream(socket.getInputStream());
-                    outputStream.writeObject(commandAndValue[0] + " "+ myIp + " " + pid + " " + commandAndValue[1]);
+                    MCPort = Integer.parseInt(commandAndValue[1]);
+                    outputStream.writeObject(commandAndValue[0] + ":"+ MCPort + ":" + myIp + ":" + pid);
                     outgoingPort = (int)inputStream.readObject();
                     multicast_thread = new MC(server, MCPort, logFile);
                     multicast_thread.start();
@@ -62,7 +62,7 @@ public class Participant {
                         outputStream = new  ObjectOutputStream(socket.getOutputStream());
                         inputStream = new ObjectInputStream(socket.getInputStream());
                         outgoingPort = 0;
-                        outputStream.writeObject(commandAndValue[0] + " " + pid);
+                        outputStream.writeObject(commandAndValue[0] + ":" + myIp + ":" + pid);
                         isRegistered = false;
                         multicast_thread.end();
                         multicast_thread.interrupt();
@@ -83,7 +83,7 @@ public class Participant {
                         outputStream = new  ObjectOutputStream(socket.getOutputStream());
                         inputStream = new ObjectInputStream(socket.getInputStream());
 
-                        outputStream.writeObject(commandAndValue[0] + " " + pid);
+                        outputStream.writeObject(commandAndValue[0] + ":" + myIp + ":" + pid);
                         isDisconnected = true;
 
                     }
@@ -98,9 +98,8 @@ public class Participant {
                         socket = new Socket(server, serverPort);
                         outputStream = new  ObjectOutputStream(socket.getOutputStream());
                         inputStream = new ObjectInputStream(socket.getInputStream());
-                        myIp = Inet4Address.getLocalHost().getHostAddress();
-                        outputStream.writeObject("reconnect " + pid + " "+ commandAndValue[1]);
                         MCPort = Integer.parseInt(commandAndValue[1]);
+                        outputStream.writeObject(commandAndValue[0] + ":"+ MCPort + ":" + myIp + ":" + pid);
                         multicast_thread = new MC(server, MCPort, logFile);
                         multicast_thread.start();
                         isDisconnected = false;
@@ -113,16 +112,15 @@ public class Participant {
                     if(isRegistered && !isDisconnected){
                         socket = new Socket(server, outgoingPort);
                         outputStream = new  ObjectOutputStream(socket.getOutputStream());
-                        outputStream.writeObject(input.substring(6));
+                        outputStream.writeObject(input.substring(input.indexOf(" ")+1));
                         Thread.sleep(10);
-
                     }
                     else if (!isRegistered){
-
                         System.out.println(">_Not registered with the MC group.");
                     }
-                    else if (isDisconnected)
-                        System.out.println(">_Reconnect to the MC group first.");
+                    else {
+                        System.out.println(">_Problems multicasting, could be due to your status.");
+                    }
                     break;
 
             }

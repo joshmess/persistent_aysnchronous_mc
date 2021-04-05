@@ -14,11 +14,12 @@ import java.util.*;
  */
 public class MCReceiver extends Thread {
 
+    static ServerSocket server;
+    static Socket socket = null;
     HashMap<Integer, ParticipantConfig> participant_list;
     int td;
     Queue<String> messageQ;
-    private static ServerSocket server;
-    static Socket socket = null;
+
     public MCReceiver(HashMap<Integer, ParticipantConfig> participant_list, int td, Queue<String> messageQ, int incomingMessagePort) throws IOException {
 
         this.participant_list = participant_list;
@@ -32,9 +33,6 @@ public class MCReceiver extends Thread {
         try {
             while(true) {
 
-                while(participant_list.isEmpty()){
-                    Thread.sleep(1000);
-                }
                 socket = server.accept();
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                 String message = (String) inputStream.readObject();
@@ -43,7 +41,7 @@ public class MCReceiver extends Thread {
                 socket.close();
             }
 
-        }catch (InterruptedException | IOException | ClassNotFoundException e) {
+        }catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 

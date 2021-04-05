@@ -31,8 +31,8 @@ public class MC extends Thread{
     {
         try{
             while(!leave){
-                Socket MCsock = ss.accept();
 
+                Socket MCsock = ss.accept();
                 ObjectInputStream inputStream = new ObjectInputStream(MCsock.getInputStream());
                 String message = (String)inputStream.readObject();
                 log(message, logfile);
@@ -53,7 +53,7 @@ public class MC extends Thread{
             FileWriter fr = new FileWriter(file, true);
             BufferedWriter br = new BufferedWriter(fr);
             PrintWriter pr = new PrintWriter(br);
-            pr.println(message);
+            pr.println("MC MSG >_ " + message);
             pr.close();
             br.close();
             fr.close();

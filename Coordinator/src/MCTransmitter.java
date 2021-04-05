@@ -27,24 +27,30 @@ public class MCTransmitter extends Thread {
     public void run(){
 
         while(true){
-            try{
 
+            try{
                 Thread.sleep(10);
 
                 while(!messageQ.isEmpty()){
+
                     String messageToCast = messageQ.poll();
                     for(ParticipantConfig participant : participant_list.values()){
                         if(participant.status.equals("active")){
+
                             Socket socket = new Socket(participant.ip, participant.port);
                             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                             outputStream.writeObject(messageToCast);
                         }
                         else if(participant.status.equals("disconnected")){
 
-                            if(participant.temporalQ.size() == td)
-                                participant.temporalQ.poll();
-
+                            // Add to participants temporalQ
                             participant.temporalQ.add(messageToCast);
+
+                            //Check if td is up so the temporal bound is not exceeded
+                            long diff = System.currentTimeMillis() - participant.disconnectTime;
+                            if(diff/100 >= td){
+                                participant.status = "deregistered";
+                            }
 
                         }
 

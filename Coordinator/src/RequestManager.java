@@ -36,35 +36,24 @@ public class RequestManager extends Thread{
 
                 sock = ss.accept();
                 connections++;
-                System.out.println(">_Participant no." + connections +"connected");
-                //take in request
+                System.out.println(">_Participant no." + connections +" connected");
+                //take in and split request around :
                 ObjectInputStream inputStream = new ObjectInputStream(sock.getInputStream());
                 ObjectOutputStream outputStream = new ObjectOutputStream(sock.getOutputStream());
                 String whole_request = (String) inputStream.readObject();
-                String[] request = whole_request.split(" ");
+                String[] request = whole_request.split(":");
 
                 switch(request[0]){
 
                     case "register":
                         outputStream.writeObject(incomingPort);
-                        participant_list.put(Integer.parseInt(request[2]),new ParticipantConfig(request[1],Integer.parseInt(request[2]), Integer.parseInt(request[3]),sock));
+                        participant_list.put(Integer.parseInt(request[3]),new ParticipantConfig(request[2],Integer.parseInt(request[3]), Integer.parseInt(request[1]),sock));
                         System.out.println(">_PID " + request[2] +" added to multicast group.");
                         break;
 
-                    case "disconnect":
-                        int given_pid = Integer.parseInt(request[1]);
-                        for(ParticipantConfig participant : participant_list.values())
-                        {
-                            if(participant.pid == given_pid)
-                            {
-                                participant.status = "disconnected";
-                            }
-                        }
-                        System.out.println(">_PID " + request[1] +" disconnected");
-                        break;
-
                     case "deregister":
-                        given_pid = Integer.parseInt(request[1]);
+                        int given_ip = Integer.parseInt(request[1]);
+                        int given_pid = Integer.parseInt(request[2]);
                         for(ParticipantConfig participant : participant_list.values())
                         {
                             if(participant.pid == given_pid)
@@ -73,19 +62,32 @@ public class RequestManager extends Thread{
                                 participant.sock.close();
                             }
                         }
-                        System.out.println(">_PID " + request[1] +" deregistered");
+                        System.out.println(">_PID " + request[1] +" deregistered at address " + given_ip);
+                        break;
+                    case "disconnect":
+                        given_ip = Integer.parseInt(request[1]);
+                        given_pid = Integer.parseInt(request[2]);
+                        for(ParticipantConfig participant : participant_list.values())
+                        {
+                            if(participant.pid == given_pid)
+                            {
+                                participant.status = "disconnected";
+                                participant.disconnectTime = System.currentTimeMillis();
+                            }
+                        }
+                        System.out.println(">_PID " + request[1] +" disconnected at address " + given_ip);
                         break;
 
                     case "reconnect":
-
-                        given_pid = Integer.parseInt(request[1]);
+                        given_ip = Integer.parseInt(request[2]);
+                        given_pid = Integer.parseInt(request[3]);
                         for(ParticipantConfig participant : participant_list.values())
                         {
                             if(!participant.status.equals("deregistered") && participant.pid == given_pid)
                             {
                                 participant.status="active";
-                                participant.port = Integer.parseInt(request[2]);
-                                System.out.println(">_PID " + request[1] +" reconnected to multicast group");
+                                participant.port = Integer.parseInt(request[1]);
+                                System.out.println(">_PID " + given_ip +" reconnected to multicast group at address " + given_ip);
 
                                 //send all missed messages
                                 while(!participant.temporalQ.isEmpty()){
