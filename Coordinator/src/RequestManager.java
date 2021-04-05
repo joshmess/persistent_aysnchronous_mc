@@ -36,7 +36,6 @@ public class RequestManager extends Thread{
 
                 sock = ss.accept();
                 connections++;
-                System.out.println(">_Participant no." + connections +" connected");
                 //take in and split request around :
                 ObjectInputStream inputStream = new ObjectInputStream(sock.getInputStream());
                 ObjectOutputStream outputStream = new ObjectOutputStream(sock.getOutputStream());
@@ -52,7 +51,7 @@ public class RequestManager extends Thread{
                         break;
 
                     case "deregister":
-                        int given_ip = Integer.parseInt(request[1]);
+                        String given_ip = request[1];
                         int given_pid = Integer.parseInt(request[2]);
                         for(ParticipantConfig participant : participant_list.values())
                         {
@@ -65,7 +64,7 @@ public class RequestManager extends Thread{
                         System.out.println(">_PID " + request[1] +" deregistered at address " + given_ip);
                         break;
                     case "disconnect":
-                        given_ip = Integer.parseInt(request[1]);
+                        given_ip = request[1];
                         given_pid = Integer.parseInt(request[2]);
                         for(ParticipantConfig participant : participant_list.values())
                         {
@@ -79,7 +78,7 @@ public class RequestManager extends Thread{
                         break;
 
                     case "reconnect":
-                        given_ip = Integer.parseInt(request[2]);
+                        given_ip = request[2];
                         given_pid = Integer.parseInt(request[3]);
                         for(ParticipantConfig participant : participant_list.values())
                         {
