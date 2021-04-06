@@ -61,7 +61,7 @@ public class RequestManager extends Thread{
                                 participant.sock.close();
                             }
                         }
-                        System.out.println(">_PID " + request[1] +" deregistered at address " + given_ip);
+                        System.out.println(">_PID " + given_pid +" deregistered at address " + given_ip);
                         break;
                     case "disconnect":
                         given_ip = request[1];
