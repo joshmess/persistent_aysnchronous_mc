@@ -38,14 +38,17 @@ public class MC extends Thread{
                 ObjectInputStream inputStream = new ObjectInputStream(MCsock.getInputStream());
                 String message = (String)inputStream.readObject();
                 log(message, logfile);
-
             }
 
-        }catch(ClassNotFoundException | IOException e){
-            e.printStackTrace();
+        } catch(ClassNotFoundException | IOException e){
         }
     }
 
+    public void shutdown() {
+        try {
+            ss.close();
+        } catch (IOException e) { }
+    }
 
     // Helper method to log MC messages
     public void log(String message, String fileName){

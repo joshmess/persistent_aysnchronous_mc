@@ -106,7 +106,6 @@ public class RequestManager extends Thread{
                                     sock = new Socket(participant.ip, participant.port);
                                     outputStream = new ObjectOutputStream(sock.getOutputStream());
                                     outputStream.writeObject(message);
-                                    System.out.println(message);
                                 }
                             }
                         }

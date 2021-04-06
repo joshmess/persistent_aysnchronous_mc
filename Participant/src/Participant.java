@@ -90,6 +90,7 @@ public class Participant {
                         outputStream = new  ObjectOutputStream(socket.getOutputStream());
                         // transmit disconnect + ip + pid
                         outputStream.writeObject(request[0] + ":" + myIp + ":" + pid);
+                        multicast_thread.shutdown();
                     }
                     else
                         System.out.println(">_NOT in MC group.");
