@@ -28,7 +28,9 @@ public class MCTransmitter extends Thread {
         while(true){
 
             try{
-
+                // Wait for participant
+                Thread.sleep(10);
+                
                 // Loop through queue
                 while(!messageQ.isEmpty()){
                     // Get next MC
