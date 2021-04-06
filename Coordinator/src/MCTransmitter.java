@@ -52,7 +52,7 @@ public class MCTransmitter extends Thread {
                         }
                     }
                 }
-            }catch(InterruptedException | IOException e){
+            }catch(IOException e){
                 e.printStackTrace();
             }
         }
