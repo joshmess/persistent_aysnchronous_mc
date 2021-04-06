@@ -33,12 +33,13 @@ public class MCReceiver extends Thread {
     public void run() {
         try {
             while(true) {
-
                 socket = server.accept();
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                 String message = (String) inputStream.readObject();
                 System.out.println(">_MC Message Recieved.");
-                messageQ.add(message);
+                synchronized (messageQ) {
+                    messageQ.add(message);
+                }
                 socket.close();
             }
 

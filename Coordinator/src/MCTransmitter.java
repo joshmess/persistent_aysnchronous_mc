@@ -24,24 +24,22 @@ public class MCTransmitter extends Thread {
 
     @Override
     public void run(){
-
         while(true){
-
             try{
-
                 // Loop through queue
-                while(!messageQ.isEmpty()){
-                    // Get next MC
-                    String messageToCast = messageQ.poll();
-                    // Loop through participants
+                String messageToCast;
+                synchronized (messageQ) {
+                    messageToCast = messageQ.poll();
+                }
+
+                if (messageToCast != null) {
                     for(ParticipantConfig participant : participant_list.values()){
                         if(participant.status.equals("active")){
                             //send MC
                             Socket socket = new Socket(participant.ip, participant.port);
                             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                             outputStream.writeObject(messageToCast);
-                        }
-                        else if(participant.status.equals("disconnected")){
+                        } else if(participant.status.equals("disconnected")){
 
                             // Add to participants temporalQ
                             participant.temporalQ.add(messageToCast);
@@ -52,7 +50,6 @@ public class MCTransmitter extends Thread {
                                 participant.status = "deregistered";
                             }
                         }
-
                     }
                 }
             }catch(IOException e){
