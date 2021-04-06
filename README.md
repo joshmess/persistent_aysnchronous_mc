@@ -5,8 +5,7 @@ Programming Project 3 - Distributed Computing Systems
 Josh Messitte, Alex Holmes, Robert Urquhart
 
 ## Issues
-- dereg
-- check persistance
+- Reconnect to same port
 
 
 #### Compile Coordinator (From '~/Coordinator/src/'):
@@ -27,5 +26,6 @@ $ java Coordinator [COORDINATOR_CONFIG_FILE]
 $ java Participant [PARTICIPANT_CONFIG_FILE]
 ```
 
-The Server Listens on port 4780, and the Coordinator listens for requests on port 9000.
+The Server Listens on port 4780, and the Coordinator listens for requests on port 9000. The "quit" command ends the program.
+
 ### This project was done in its entirety by Josh, Alex, and Robert. We hereby state that we have not received unauthorized help of any form. 
