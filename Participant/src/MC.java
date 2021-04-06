@@ -18,6 +18,7 @@ public class MC extends Thread{
     static ServerSocket ss;
     boolean leave;
 
+    // Default constructor
     public MC(String server, int MCport, String logFile) throws  IOException {
 
         this.server = server;
@@ -27,11 +28,12 @@ public class MC extends Thread{
         leave = false;
     }
 
+    @Override
     public void run()
     {
         try{
-            while(!leave){
 
+            while(!leave){
                 Socket MCsock = ss.accept();
                 ObjectInputStream inputStream = new ObjectInputStream(MCsock.getInputStream());
                 String message = (String)inputStream.readObject();
@@ -42,12 +44,11 @@ public class MC extends Thread{
         }catch(ClassNotFoundException | IOException e){
             e.printStackTrace();
         }
-
-
     }
 
-    public void log(String message, String fileName){
 
+    // Helper method to log MC messages
+    public void log(String message, String fileName){
         try{
             File file = new File(fileName);
             FileWriter fr = new FileWriter(file, true);

@@ -15,28 +15,28 @@ public class MCTransmitter extends Thread {
     int td;
     Queue<String> messageQ;
 
-
+    // Default constructor
     public MCTransmitter(HashMap<Integer, ParticipantConfig> participants, int td, Queue<String> messageQ) {
-
         this.participant_list = participants;
         this.td = td;
         this.messageQ = messageQ;
-
     }
 
+    @Override
     public void run(){
 
         while(true){
 
             try{
-                Thread.sleep(10);
 
+                // Loop through queue
                 while(!messageQ.isEmpty()){
-
+                    // Get next MC
                     String messageToCast = messageQ.poll();
+                    // Loop through participants
                     for(ParticipantConfig participant : participant_list.values()){
                         if(participant.status.equals("active")){
-
+                            //send MC
                             Socket socket = new Socket(participant.ip, participant.port);
                             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                             outputStream.writeObject(messageToCast);
@@ -51,18 +51,14 @@ public class MCTransmitter extends Thread {
                             if(diff/100 >= td){
                                 participant.status = "deregistered";
                             }
-
                         }
 
                     }
                 }
-            }catch(InterruptedException | IOException e){
+            }catch(IOException e){
                 e.printStackTrace();
             }
-
         }
-
-
     }
 
 }

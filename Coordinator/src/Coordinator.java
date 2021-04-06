@@ -19,14 +19,16 @@ public class Coordinator {
         mct.start();
         mcr.start();
     }
+
+    //Driving Method
     public static void main(String[] args) throws IOException {
 
         // Parse args
         List<String> configFile = Files.readAllLines(Paths.get(args[0]));
-
         incomingPort = Integer.parseInt(configFile.get(0));
         td = Integer.parseInt(configFile.get(1));
 
+        // Create instances
         RequestManager rm = new RequestManager(participant_list, td, incomingPort);
         MCReceiver mcr = new MCReceiver(participant_list, td, messageQ, incomingPort);
         MCTransmitter mct = new MCTransmitter(participant_list, td, messageQ);

@@ -20,6 +20,7 @@ public class MCReceiver extends Thread {
     int td;
     Queue<String> messageQ;
 
+    // Default constructor
     public MCReceiver(HashMap<Integer, ParticipantConfig> participant_list, int td, Queue<String> messageQ, int incomingPort) throws IOException {
 
         this.participant_list = participant_list;
@@ -28,7 +29,7 @@ public class MCReceiver extends Thread {
         server = new ServerSocket(incomingPort);
     }
 
-
+    @Override
     public void run() {
         try {
             while(true) {
